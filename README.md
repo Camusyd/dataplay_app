@@ -43,7 +43,7 @@ Luego abre el enlace que aparece en la terminal para ver el dashboard en tu nave
 ## Créditos
 
 Proyecto de grado – 2025  
-Desarrollado por [Tu Nombre]
+Desarrollado por Juan Pablo C J - Kelly
 
 ---
 
