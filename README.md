@@ -37,5 +37,3 @@
 
 ---
 
-## 📁 Estructura del Proyecto
-
