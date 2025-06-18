@@ -49,13 +49,3 @@
 - ✨ Animaciones suaves al pasar el mouse por botones y secciones
 
 ---
-
-## 📬 Formulario Funcional con FormSubmit
-
-Formulario de contacto integrado en `index.html` y `contacto.html`:
-
-```html
-<form action="https://formsubmit.co/TU_CORREO@gmail.com" method="POST">
-  <input type="hidden" name="_next" value="gracias.html">
-  <input type="hidden" name="_captcha" value="false">
-</form>
