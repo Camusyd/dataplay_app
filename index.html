@@ -1,72 +1,312 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DataPlay - Dashboard NBA</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Montserrat&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formación en BI Deportivo – DataPlay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #121212;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #1a1a1a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      box-shadow: 0 0 10px #00ffcc44;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: #00ffcc;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #00ffcc;
+    }
+
+    main {
+      padding-top: 6rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h1, h2, h3 {
+      color: #00ffff;
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 1rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    ul {
+      margin-left: 1.5rem;
+      list-style: disc;
+    }
+
+    .formulario {
+      background-color: #1e1e1e;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .formulario input, .formulario select {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .formulario label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .formulario button {
+      padding: 0.7rem;
+      background-color: #00ffcc;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .formulario button:hover {
+      background-color: #00ffff;
+    }
+
+    .footer {
+  background-color: #1a1a1a;
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 3rem;
+  border-top: 1px solid #00ffcc44;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+  </style>
 </head>
 <body>
+
   <!-- Navbar fija -->
   <nav class="navbar">
     <div class="logo">DataPlay</div>
     <ul class="nav-links">
-      <li><a href="#inicio">Inicio</a></li>
-      <li><a href="#cursos">Cursos</a></li>
-      <li><a href="#dashboard">Demo Dashboard</a></li>
-      <li><a href="#blog">Blog</a></li>
-      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+      <li><a href="dashboard.html">Demo Dashboard</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
     </ul>
   </nav>
 
-  <!-- Hero -->
-  <header class="hero" id="inicio">
-    <div class="hero-content">
-      <h1>Transformamos datos en jugadas maestras</h1>
-      <p>Analítica deportiva para campeones del dato</p>
-    </div>
-  </header>
+  <main>
+    <section id="inicio">
+      <h1>🎓 Formación en Business Intelligence y Análisis de Datos Deportivos</h1>
+      <p>Aprende a tomar decisiones basadas en datos reales, con herramientas modernas y casos prácticos del deporte.</p>
+    </section>
 
-  <!-- Cards -->
-  <section class="cards-section" id="cursos">
-    <div class="card">
-      <i class="icon">📘</i>
-      <h2>Cursos</h2>
-      <p>Aprende Data Science aplicado al deporte desde cero.</p>
-    </div>
-    <div class="card">
-      <i class="icon">👥</i>
-      <h2>Comunidad</h2>
-      <p>Únete a una red de entusiastas y profesionales del deporte y datos.</p>
-    </div>
-    <div class="card">
-      <i class="icon">🛠️</i>
-      <h2>Herramientas</h2>
-      <p>Explora recursos y dashboards listos para usar.</p>
-    </div>
-  </section>
+    <section id="porque">
+      <h2>🚀 ¿Por qué estudiar con nosotros?</h2>
+      <p>En la era de los datos, entender el juego va más allá de la intuición. La analítica deportiva y el Business Intelligence se han convertido en pilares clave para el rendimiento, la estrategia y la gestión en organizaciones deportivas modernas.</p>
+      <p>En nuestro programa formativo 100% online, te entrenamos para convertirte en un analista capaz de transformar información en acción.</p>
+    </section>
 
-  <!-- Dashboard -->
-  <section class="dashboard-card" id="dashboard">
-    <h2>Dashboard NBA - Denver Nuggets</h2>
-    <iframe src="http://127.0.0.1:8050"></iframe>
-  </section>
+    <section>
+      <h2>💼 Saldrás preparado para:</h2>
+      <ul>
+        <li>Analizar datos deportivos reales con herramientas líderes del mercado.</li>
+        <li>Construir dashboards interactivos para clubes, entrenadores o agencias.</li>
+        <li>Identificar patrones de rendimiento y proponer mejoras basadas en datos.</li>
+        <li>Tomar decisiones deportivas informadas como parte de una cultura Data Driven.</li>
+        <li>Una formación enfocada en resultados, sin teoría vacía. Aprenderás haciendo.</li>
+      </ul>
+    </section>
 
-  <!-- Footer -->
-  <footer class="footer" id="contacto">
-    <div class="footer-content">
-      <p>&copy; 2025 DataPlay. Todos los derechos reservados.</p>
-      <div class="social">
-        <a href="#">🐦 Twitter</a>
-        <a href="#">📘 Facebook</a>
-        <a href="#">📸 Instagram</a>
-      </div>
-      <p><a href="#">Términos y condiciones</a> | <a href="#">Política de privacidad</a></p>
-    </div>
-  </footer>
+    <section>
+      <h2>🛠️ Herramientas y tecnologías que dominarás</h2>
+      <ul>
+        <li>Power BI</li>
+        <li>Google Data Studio (Looker Studio)</li>
+        <li>Python (Pandas, Numpy, Matplotlib, Seaborn)</li>
+        <li>SQL (BigQuery y MySQL)</li>
+        <li>Google Sheets y Excel para análisis rápido</li>
+        <li>Kaggle para datasets y notebooks</li>
+        <li>Streamlit para crear dashboards interactivos</li>
+        <li>Jupyter Notebooks</li>
+        <li>Google Cloud Platform (introducción a BigQuery y Cloud Storage)</li>
+      </ul>
+    </section>
 
-  <script src="script.js"></script>
+    <section>
+      <h2>🎯 Metodología práctica desde el primer día</h2>
+      <ul>
+        <li>Clases cortas, dinámicas y enfocadas en problemas reales.</li>
+        <li>Proyectos semanales enfocados en datos deportivos reales.</li>
+        <li>Evaluación por entregables, no exámenes tradicionales.</li>
+        <li>Acceso a dashboards de ejemplo y datasets reales del mundo del deporte.</li>
+      </ul>
+    </section>
+
+    <section id="cursos">
+      <h2>📈 ¿Qué aprenderás?</h2>
+      <ul>
+        <li>Fundamentos de Business Intelligence y Análisis de Datos</li>
+        <li>Visualización de datos aplicada al deporte</li>
+        <li>Limpieza, transformación y análisis exploratorio de datos</li>
+        <li>Principios de estadística descriptiva aplicada</li>
+        <li>Construcción de dashboards y reportes ejecutivos</li>
+        <li>Creación de indicadores de rendimiento (KPIs)</li>
+        <li>Automatización básica de reportes</li>
+        <li>Introducción al análisis predictivo y modelos básicos</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🧠 ¿Qué podrás hacer al terminar?</h2>
+      <ul>
+        <li>Crear reportes dinámicos para seguimiento de jugadores, equipos o eventos.</li>
+        <li>Diseñar dashboards que comuniquen insights clave.</li>
+        <li>Identificar oportunidades y proponer mejoras desde los datos.</li>
+        <li>Integrarte a equipos de análisis, scouting o gestión deportiva.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🧪 ¿A quién va dirigido?</h2>
+      <ul>
+        <li>Estudiantes o profesionales del deporte que quieran aprender análisis de datos</li>
+        <li>Analistas de datos que quieran especializarse en deporte</li>
+        <li>Entrenadores, scouts, periodistas deportivos y gestores</li>
+        <li>Amantes del fútbol y otros deportes que quieren trabajar con datos</li>
+      </ul>
+    </section>
+
+    <section id="contacto">
+      <h2>📬 ¿Te interesa?</h2>
+      <p>Solicita información sobre:</p>
+      <ul>
+        <li>Contenidos y duración del programa</li>
+        <li>Acceso a la demo del dashboard</li>
+        <li>Modalidades de pago y becas parciales</li>
+      </ul>
+<form action="https://formsubmit.co/sydorange93@gmail.com" method="POST" class="formulario">
+  <label for="nombre">Nombre:</label>
+  <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" placeholder="tucorreo@example.com" required>
+
+  <label for="edad">Edad:</label>
+  <select id="edad" name="edad" required>
+    <option value="">Selecciona tu edad</option>
+    <option>Menos de 18</option>
+    <option>18-24</option>
+    <option>25-34</option>
+    <option>35-44</option>
+    <option>45+</option>
+  </select>
+
+  <label for="curso">Curso de interés:</label>
+  <select id="curso" name="curso" required>
+    <option value="">Selecciona un curso</option>
+    <option>Fundamentos del Análisis de Datos Deportivos - Duración: 4 semanas</option>
+    <option>Business Intelligence Aplicado al Deporte - Duración: 8 semanas</option>
+    <option>Modelado Predictivo y Scouting con Datos Deportivos - Duración: 12 semanas</option>
+  </select>
+
+  <label for="telefono">Teléfono:</label>
+  <input type="tel" id="telefono" name="telefono" placeholder="+57 300 000 0000" required>
+
+<label>
+  <input type="checkbox" name="terminos" required>
+  He leído y acepto los
+  <a href="terminos.html" target="_blank">Términos del Servicio</a> y la
+  <a href="privacidad.html" target="_blank">Política de Privacidad</a>.
+</label>
+
+
+  <!-- Opcional: redirigir después de enviar -->
+  <input type="hidden" name="_next" value="http://127.0.0.1:5500/gracias.html">
+
+  <!-- Opcional: evitar CAPTCHA -->
+  <input type="hidden" name="_captcha" value="false">
+
+  <button type="submit">Solicitar información</button>
+</form>
+
+    </section>
+
+    <section>
+      <h2>💬 Lo que podemos prometer</h2>
+      <ul>
+        <li>Formación práctica desde el día uno</li>
+        <li>Herramientas reales y actuales del mercado</li>
+        <li>Proyectos aplicados al deporte</li>
+        <li>Acompañamiento personalizado</li>
+        <li>Certificado de finalización</li>
+      </ul>
+    </section>
+
+  </main>
+
+    <!-- Footer -->
+<footer style="background-color: #111; color: #ccc; text-align: center; padding: 2rem; font-family: 'Montserrat', sans-serif;">
+  <p>&copy; 2025 DataPlay. Todos los derechos reservados.</p>
+  
+  <div style="margin-top: 1rem; font-size: 0.9rem;">
+    <a href="terminos.html" target="_blank" style="color: #00ffcc; text-decoration: underline; margin: 0 1rem;">
+      Términos del Servicio
+    </a>
+    |
+    <a href="privacidad.html" target="_blank" style="color: #00ffcc; text-decoration: underline; margin: 0 1rem;">
+      Política de Privacidad
+    </a>
+  </div>
+</footer>
+
+  
 </body>
 </html>
+
+
+
+
 

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto - DataPlay</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Navbar fija -->
+  <nav class="navbar">
+    <div class="logo">DataPlay</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="cursos.html">Cursos</a></li>
+      <li><a href="dashboard.html">Demo Dashboard</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- Espacio compensatorio para la navbar -->
+  <div style="height: 80px;"></div>
+
+<!-- Sección de contacto -->
+<section class="dashboard-card" id="contacto">
+  <h2>¿Hablamos? Contáctanos</h2>
+  <p style="text-align: center; margin-bottom: 2rem;">
+    Si tienes preguntas sobre nuestros cursos, dashboards o simplemente quieres saber cómo iniciarte en el análisis de datos deportivos, completa el formulario y te responderemos lo antes posible.
+  </p>
+
+  <form action="https://formsubmit.co/sydorange93@gmail.com" method="POST" style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;">
+    <!-- Campos visibles -->
+    <input type="text" name="nombre" placeholder="Tu nombre completo" required style="padding: 0.8rem; border-radius: 0.5rem; border: none; background-color: #2c2c2c; color: white;" />
+    <input type="email" name="email" placeholder="Tu email" required style="padding: 0.8rem; border-radius: 0.5rem; border: none; background-color: #2c2c2c; color: white;" />
+    <input type="tel" name="telefono" placeholder="Tu número de contacto" style="padding: 0.8rem; border-radius: 0.5rem; border: none; background-color: #2c2c2c; color: white;" />
+    <textarea name="mensaje" placeholder="Cuéntanos qué necesitas..." rows="5" style="padding: 0.8rem; border-radius: 0.5rem; border: none; background-color: #2c2c2c; color: white;"></textarea>
+
+    <!-- Checkbox legal -->
+    <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: #ccc;">
+      <input type="checkbox" required />
+      He leído y acepto los <a href="terminos.html" target="_blank">términos del servicio</a> y la
+      <a href="privacidad.html" target="_blank">política de privacidad</a>.
+    </label>
+
+    <!-- Botón -->
+    <button type="submit" style="background-color: #00ffcc; color: #000; padding: 1rem; border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer;">
+      Enviar mensaje
+    </button>
+
+    <!-- Campos ocultos para FormSubmit -->
+    <input type="hidden" name="_next" value="http://127.0.0.1:5500/gracias.html">
+    <input type="hidden" name="_captcha" value="false">
+  </form>
+</section>
+
+<!-- CTA adicional -->
+<section class="cards-section">
+  <div class="card">
+    <div class="icon">📩</div>
+    <h3>¿Prefieres contactarnos por correo?</h3>
+    <p>También puedes escribirnos a <strong>contacto@dataplay.com</strong> y responderemos en menos de 24 horas.</p>
+  </div>
+</section>
+
+
+  <!-- Footer -->
+<footer style="background-color: #111; color: #ccc; text-align: center; padding: 2rem; font-family: 'Montserrat', sans-serif;">
+  <p>&copy; 2025 DataPlay. Todos los derechos reservados.</p>
+  
+  <div style="margin-top: 1rem; font-size: 0.9rem;">
+    <a href="terminos.html" target="_blank" style="color: #00ffcc; text-decoration: underline; margin: 0 1rem;">
+      Términos del Servicio
+    </a>
+    |
+    <a href="privacidad.html" target="_blank" style="color: #00ffcc; text-decoration: underline; margin: 0 1rem;">
+      Política de Privacidad
+    </a>
+  </div>
+</footer>
+
+
+</body>
+</html>
