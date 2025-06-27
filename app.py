@@ -1,103 +1,89 @@
-from nba_api.stats.endpoints import teamplayerdashboard
-from nba_api.stats.static import teams
+import streamlit as st
 import pandas as pd
-import dash
-from dash import dcc, html
-from dash.dependencies import Input, Output
+from nba_api.stats.static import teams
+from nba_api.stats.endpoints import teamplayerdashboard
 import plotly.express as px
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
-# Obtener el ID del equipo Denver Nuggets
-nba_teams = teams.get_teams()
-denver_nuggets = [team for team in nba_teams if team['full_name'] == 'Denver Nuggets'][0]
-team_id = denver_nuggets['id']
+st.set_page_config(page_title="Denver Nuggets Dashboard", layout="wide")
 
-# Temporada campeón
-season = '2022-23'
-
-# Obtener datos temporada regular y playoffs
-regular_df = teamplayerdashboard.TeamPlayerDashboard(
-    team_id=team_id,
-    season=season,
-    season_type_all_star='Regular Season'
-).get_data_frames()[1]
-
-playoffs_df = teamplayerdashboard.TeamPlayerDashboard(
-    team_id=team_id,
-    season=season,
-    season_type_all_star='Playoffs'
-).get_data_frames()[1]
-
-# Funciones de analítica avanzada
-def calcular_eficiencia(df):
+# Cargar datos desde NBA API
+@st.cache_data
+def cargar_datos(season_type):
+    team_id = [t for t in teams.get_teams() if t['full_name'] == 'Denver Nuggets'][0]['id']
+    df = teamplayerdashboard.TeamPlayerDashboard(
+        team_id=team_id, season='2022-23', season_type_all_star=season_type
+    ).get_data_frames()[1]
     df['EFFICIENCY'] = (df['PTS'] + df['REB'] + df['AST'] + df['STL'] + df['BLK']
                         - (df['FGA'] - df['FGM']) - df['TOV'])
     return df
 
-regular_df = calcular_eficiencia(regular_df)
-playoffs_df = calcular_eficiencia(playoffs_df)
+# Sidebar
+st.sidebar.title("Filtros")
+tipo_temporada = st.sidebar.selectbox("Temporada", ["Regular Season", "Playoffs"])
+df = cargar_datos(tipo_temporada)
 
-# Crear la app Dash
-app = dash.Dash(__name__)
-app.title = 'Dashboard Avanzado Denver Nuggets 2022-23'
+# Filtro por posición
+posiciones = df['PLAYER_POSITION'].dropna().unique().tolist()
+pos_filtradas = st.sidebar.multiselect("Filtrar por posición", posiciones)
+if pos_filtradas:
+    df = df[df["PLAYER_POSITION"].isin(pos_filtradas)]
 
-app.layout = html.Div([
-    html.H1('Dashboard Avanzado - Denver Nuggets 2022-23', style={'textAlign': 'center'}),
+# Título
+st.title("📊 Dashboard - Denver Nuggets 2022-23")
 
-    html.Div([
-        html.Label('Selecciona el tipo de temporada:'),
-        dcc.Dropdown(
-            id='season-type',
-            options=[
-                {'label': 'Temporada Regular', 'value': 'Regular'},
-                {'label': 'Playoffs', 'value': 'Playoffs'}
-            ],
-            value='Regular'
-        )
-    ], style={'width': '50%', 'margin': 'auto'}),
+# Columnas con gráficos
+col1, col2 = st.columns(2)
+col1.plotly_chart(px.bar(df.sort_values("EFFICIENCY", ascending=False), x="PLAYER_NAME", y="EFFICIENCY",
+                         title="Eficiencia por Jugador", color="EFFICIENCY", color_continuous_scale='Viridis'), use_container_width=True)
 
-    dcc.Graph(id='efficiency-bar'),
-    dcc.Graph(id='radar-stats'),
-    dcc.Graph(id='scatter-points-assists'),
-])
+col2.plotly_chart(px.scatter(df, x="AST", y="PTS", color="PLAYER_NAME", size="EFFICIENCY",
+                             title="Asistencias vs Puntos", hover_name='PLAYER_NAME'), use_container_width=True)
 
-@app.callback(
-    [Output('efficiency-bar', 'figure'),
-     Output('radar-stats', 'figure'),
-     Output('scatter-points-assists', 'figure')],
-    [Input('season-type', 'value')]
-)
-def update_graphs(season_type):
-    df = regular_df if season_type == 'Regular' else playoffs_df
+col3, col4 = st.columns(2)
+col3.plotly_chart(px.bar(df.sort_values("PTS", ascending=False), x="PLAYER_NAME", y="PTS", color="PTS",
+                         title="Puntos por Jugador", color_continuous_scale='Blues'), use_container_width=True)
+col4.plotly_chart(px.bar(df.sort_values("REB", ascending=False), x="PLAYER_NAME", y="REB", color="REB",
+                         title="Rebotes por Jugador", color_continuous_scale='Purples'), use_container_width=True)
 
-    # Gráfico de eficiencia
-    fig_eff = px.bar(df.sort_values('EFFICIENCY', ascending=False),
-                     x='PLAYER_NAME', y='EFFICIENCY',
-                     title='Eficiencia por Jugador', color='EFFICIENCY')
+col5, col6 = st.columns(2)
+col5.plotly_chart(px.bar(df.sort_values("STL", ascending=False), x="PLAYER_NAME", y="STL", color="STL",
+                         title="Robos por Jugador", color_continuous_scale='Greens'), use_container_width=True)
+col6.plotly_chart(px.bar(df.sort_values("FG3M", ascending=False), x="PLAYER_NAME", y="FG3M", color="FG3M",
+                         title="Triples Encestados", color_continuous_scale='Reds'), use_container_width=True)
 
-    # Gráfico tipo radar de rendimiento por jugador (usamos un jugador destacado por ejemplo)
-    player_radar = df.sort_values('PTS', ascending=False).iloc[0]
-    radar_stats = {
-        'PTS': player_radar['PTS'],
-        'REB': player_radar['REB'],
-        'AST': player_radar['AST'],
-        'STL': player_radar['STL'],
-        'BLK': player_radar['BLK']
-    }
-    fig_radar = px.line_polar(r=pd.Series(radar_stats),
-                               theta=list(radar_stats.keys()),
-                               line_close=True,
-                               title=f"Radar Stats: {player_radar['PLAYER_NAME']}")
+# Tabla de datos
+st.subheader("📋 Tabla de Jugadores")
+st.dataframe(df[["PLAYER_NAME", "PLAYER_POSITION", "PTS", "REB", "AST", "EFFICIENCY"]])
 
-    # Diagrama de dispersín puntos vs asistencias
-    fig_scatter = px.scatter(df, x='AST', y='PTS', color='PLAYER_NAME',
-                             size='EFFICIENCY',
-                             title='Relación Puntos vs Asistencias',
-                             hover_name='PLAYER_NAME')
+# Botón para descargar CSV
+csv = df.to_csv(index=False).encode()
+st.download_button("📥 Descargar CSV", csv, file_name="jugadores_filtrados.csv", mime="text/csv")
 
-    return fig_eff, fig_radar, fig_scatter
+# Botón para descargar PDF
+if st.button("📄 Generar Informe PDF"):
+    buffer = BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+    c.setFont("Helvetica", 12)
+    c.drawString(100, 750, f"Informe NBA - {tipo_temporada}")
+    y = 720
+    for _, row in df.iterrows():
+        c.drawString(50, y, f"{row['PLAYER_NAME']}: PTS={row['PTS']}, REB={row['REB']}, AST={row['AST']}, EFF={row['EFFICIENCY']}")
+        y -= 20
+        if y < 50:
+            c.showPage()
+            y = 750
+    c.save()
+    st.download_button("📄 Descargar Informe PDF", data=buffer.getvalue(), file_name="informe.pdf", mime="application/pdf")
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+
+
+
+
+
 
 
 
