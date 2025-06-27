@@ -184,6 +184,7 @@ if __name__ == '__main__':
 
     
     # python app.py
+#streamlit run app.py
 
 
 

@@ -1,82 +1,179 @@
 import streamlit as st
 import pandas as pd
-from nba_api.stats.static import teams
-from nba_api.stats.endpoints import teamplayerdashboard
 import plotly.express as px
+from nba_api.stats.endpoints import leaguedashplayerstats
+from datetime import datetime
 from io import BytesIO
-from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
-st.set_page_config(page_title="Denver Nuggets Dashboard", layout="wide")
+# ---- CONFIG ----
+st.set_page_config(page_title="DataPlay - Análisis Ofensivo", layout="wide")
+st.title("🏀 DataPlay - Dashboard Ofensivo de Jugadores NBA")
 
-# Cargar datos desde NBA API
+# ---- Filtros ----
+st.sidebar.header("Filtros de Datos") # Encabezado más general
+temp_actual = datetime.now().year
+
+# Generar la lista de todas las temporadas disponibles
+all_seasons = [f"{y}-{str(y+1)[-2:]}" for y in range(2015, temp_actual)]
+
+# Determinar el índice de la última temporada generada (que debería ser la 2024-2025)
+default_season_index = len(all_seasons) - 1
+
+season = st.sidebar.selectbox(
+    "Selecciona la temporada",
+    all_seasons,
+    index=default_season_index # Usamos el índice calculado para la selección por defecto
+)
+season_type = st.sidebar.radio("Tipo de temporada", ["Regular Season", "Playoffs"])
+
+# ---- Carga de Datos ----
+st.sidebar.info(f"Cargando datos de NBA para la temporada {season}...")
 @st.cache_data
-def cargar_datos(season_type):
-    team_id = [t for t in teams.get_teams() if t['full_name'] == 'Denver Nuggets'][0]['id']
-    df = teamplayerdashboard.TeamPlayerDashboard(
-        team_id=team_id, season='2022-23', season_type_all_star=season_type
-    ).get_data_frames()[1]
-    df['EFFICIENCY'] = (df['PTS'] + df['REB'] + df['AST'] + df['STL'] + df['BLK']
-                        - (df['FGA'] - df['FGM']) - df['TOV'])
+def cargar_datos(season, season_type):
+    stats = leaguedashplayerstats.LeagueDashPlayerStats(
+        season=season,
+        season_type_all_star=season_type,
+        per_mode_detailed="PerGame"
+    )
+    df = stats.get_data_frames()[0]
     return df
 
-# Sidebar
-st.sidebar.title("Filtros")
-tipo_temporada = st.sidebar.selectbox("Temporada", ["Regular Season", "Playoffs"])
-df = cargar_datos(tipo_temporada)
+df_original = cargar_datos(season, season_type) # Cargamos el DataFrame original
+st.success("✅ Datos cargados exitosamente")
 
-# Filtro por posición
-posiciones = df['PLAYER_POSITION'].dropna().unique().tolist()
-pos_filtradas = st.sidebar.multiselect("Filtrar por posición", posiciones)
-if pos_filtradas:
-    df = df[df["PLAYER_POSITION"].isin(pos_filtradas)]
+# --- Aplicar filtro de equipo ---
+teams = sorted(df_original['TEAM_ABBREVIATION'].unique())
 
-# Título
-st.title("📊 Dashboard - Denver Nuggets 2022-23")
+# --- Buscar el índice de 'OKC' para establecerlo como valor por defecto ---
+default_team_name = "OKC"
+default_team_index = 0 # Valor por defecto si 'OKC' no se encuentra (será "Todos")
+try:
+    # El selectbox incluye "Todos" al principio, así que el índice real será +1
+    default_team_index = teams.index(default_team_name) + 1
+except ValueError:
+    # Si por alguna razón 'OKC' no está en la lista (ej: datos de otra temporada)
+    # se mantendrá "Todos" como valor por defecto.
+    st.sidebar.warning(f"El equipo '{default_team_name}' no se encontró en los datos cargados. Se seleccionó 'Todos' por defecto.")
 
-# Columnas con gráficos
-col1, col2 = st.columns(2)
-col1.plotly_chart(px.bar(df.sort_values("EFFICIENCY", ascending=False), x="PLAYER_NAME", y="EFFICIENCY",
-                         title="Eficiencia por Jugador", color="EFFICIENCY", color_continuous_scale='Viridis'), use_container_width=True)
 
-col2.plotly_chart(px.scatter(df, x="AST", y="PTS", color="PLAYER_NAME", size="EFFICIENCY",
-                             title="Asistencias vs Puntos", hover_name='PLAYER_NAME'), use_container_width=True)
+selected_team = st.sidebar.selectbox(
+    "Filtra por Equipo",
+    ["Todos"] + list(teams),
+    index=default_team_index # Usamos el índice de 'OKC'
+)
 
-col3, col4 = st.columns(2)
-col3.plotly_chart(px.bar(df.sort_values("PTS", ascending=False), x="PLAYER_NAME", y="PTS", color="PTS",
-                         title="Puntos por Jugador", color_continuous_scale='Blues'), use_container_width=True)
-col4.plotly_chart(px.bar(df.sort_values("REB", ascending=False), x="PLAYER_NAME", y="REB", color="REB",
-                         title="Rebotes por Jugador", color_continuous_scale='Purples'), use_container_width=True)
+df_filtered_by_team = df_original.copy() # Creamos una copia para aplicar filtros
+if selected_team != "Todos":
+    df_filtered_by_team = df_original[df_original['TEAM_ABBREVIATION'] == selected_team]
 
-col5, col6 = st.columns(2)
-col5.plotly_chart(px.bar(df.sort_values("STL", ascending=False), x="PLAYER_NAME", y="STL", color="STL",
-                         title="Robos por Jugador", color_continuous_scale='Greens'), use_container_width=True)
-col6.plotly_chart(px.bar(df.sort_values("FG3M", ascending=False), x="PLAYER_NAME", y="FG3M", color="FG3M",
-                         title="Triples Encestados", color_continuous_scale='Reds'), use_container_width=True)
+# Si eliminamos el filtro de posición, df_filtered_by_position es igual a df_filtered_by_team
+df_filtered_by_position = df_filtered_by_team.copy()
 
-# Tabla de datos
-st.subheader("📋 Tabla de Jugadores")
-st.dataframe(df[["PLAYER_NAME", "PLAYER_POSITION", "PTS", "REB", "AST", "EFFICIENCY"]])
 
-# Botón para descargar CSV
-csv = df.to_csv(index=False).encode()
-st.download_button("📥 Descargar CSV", csv, file_name="jugadores_filtrados.csv", mime="text/csv")
+# --- Aplicar filtro de jugador ---
+# Obtenemos los nombres de jugadores únicos del DataFrame ya filtrado
+player_names = sorted(df_filtered_by_position['PLAYER_NAME'].unique())
+selected_player = st.sidebar.selectbox("Filtra por Jugador", ["Todos"] + list(player_names))
 
-# Botón para descargar PDF
-if st.button("📄 Generar Informe PDF"):
-    buffer = BytesIO()
-    c = canvas.Canvas(buffer, pagesize=letter)
-    c.setFont("Helvetica", 12)
-    c.drawString(100, 750, f"Informe NBA - {tipo_temporada}")
-    y = 720
-    for _, row in df.iterrows():
-        c.drawString(50, y, f"{row['PLAYER_NAME']}: PTS={row['PTS']}, REB={row['REB']}, AST={row['AST']}, EFF={row['EFFICIENCY']}")
-        y -= 20
-        if y < 50:
-            c.showPage()
-            y = 750
-    c.save()
-    st.download_button("📄 Descargar Informe PDF", data=buffer.getvalue(), file_name="informe.pdf", mime="application/pdf")
+df_final = df_filtered_by_position.copy()
+if selected_player != "Todos":
+    df_final = df_filtered_by_position[df_filtered_by_position['PLAYER_NAME'] == selected_player]
+
+# ---- Gráficas ----
+st.subheader("🔍 Análisis Ofensivo de Jugadores")
+
+# Asegurarse de que haya datos para graficar
+if df_final.empty:
+    st.warning("No hay datos disponibles para los filtros seleccionados.")
+else:
+    col1, col2 = st.columns(2)
+    with col1:
+        fig_pts = px.bar(df_final.sort_values("PTS", ascending=False).head(15),
+                         x="PLAYER_NAME", y="PTS",
+                         title="Top 15: Puntos por Partido",
+                         color="PTS")
+        st.plotly_chart(fig_pts, use_container_width=True)
+
+    with col2:
+        fig_ast = px.bar(df_final.sort_values("AST", ascending=False).head(15),
+                         x="PLAYER_NAME", y="AST",
+                         title="Top 15: Asistencias por Partido",
+                         color="AST")
+        st.plotly_chart(fig_ast, use_container_width=True)
+
+    col3, col4 = st.columns(2)
+    with col3:
+        fig_eff = px.scatter(df_final, x="MIN", y="PTS", size="FG_PCT",
+                             hover_name="PLAYER_NAME", title="Minutos vs Puntos (Tamaño: FG%)",
+                             color="FG_PCT")
+        st.plotly_chart(fig_eff, use_container_width=True)
+
+    with col4:
+        fig_fg3 = px.bar(df_final.sort_values("FG3M", ascending=False).head(15),
+                         x="PLAYER_NAME", y="FG3M",
+                         title="Top 15: Triples Encestados",
+                         color="FG3M")
+        st.plotly_chart(fig_fg3, use_container_width=True)
+
+    # ---- Tabla ----
+    st.subheader("📋 Datos Detallados de Jugadores")
+    columnas_mostrar = ["PLAYER_NAME", "TEAM_ABBREVIATION", "PTS", "AST", "FGM", "FGA", "FG_PCT", "FG3M", "FG3A", "FG3_PCT", "MIN"]
+    st.dataframe(df_final[columnas_mostrar].sort_values("PTS", ascending=False), use_container_width=True)
+
+    # ---- Descarga CSV ----
+    @st.cache_data
+    def convertir_csv(dataframe):
+        return dataframe.to_csv(index=False).encode("utf-8")
+
+    csv = convertir_csv(df_final[columnas_mostrar])
+    st.download_button("⬇️ Descargar CSV", csv, f"jugadores_{season}_{selected_team}_{season_type.replace(' ', '_')}.csv", "text/csv")
+
+    # ---- Descarga PDF ----
+    def generar_pdf(df):
+        buffer = BytesIO()
+        c = canvas.Canvas(buffer)
+        c.setFont("Helvetica-Bold", 16)
+
+        # Título principal del PDF
+        title_text = f"Reporte Ofensivo: {season} - {season_type}"
+        c.drawString(50, 800, title_text)
+
+        y_offset = 780
+        c.setFont("Helvetica", 10)
+
+        # Añadir filtros al PDF
+        if selected_team != "Todos":
+            c.drawString(50, y_offset, f"Equipo: {selected_team}")
+            y_offset -= 18
+        if selected_player != "Todos":
+            c.drawString(50, y_offset, f"Jugador: {selected_player}")
+            y_offset -= 18
+
+        y = y_offset
+        # Asegurarse de que haya datos para el PDF
+        if not df.empty:
+            for i, row in df.head(20).iterrows():
+                c.drawString(50, y, f"{row['PLAYER_NAME'][:25]:25} | PTS: {row['PTS']:.1f} | AST: {row['AST']:.1f} | FG%: {row['FG_PCT']:.2%}")
+                y -= 18
+                if y < 50:
+                    c.showPage()
+                    y = 800
+        else:
+            c.drawString(50, y, "No hay datos para los filtros seleccionados.")
+        c.save()
+        buffer.seek(0)
+        return buffer
+
+    pdf_buffer = generar_pdf(df_final[columnas_mostrar])
+    st.download_button("📝 Descargar PDF (Resumen)", pdf_buffer, f"reporte_ofensivo_{season}_{selected_team}.pdf")
+
+st.caption("Desarrollado con ❤️ por DataPlay")
+
+
+
+
+
 
 
 
