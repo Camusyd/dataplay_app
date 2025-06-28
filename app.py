@@ -184,6 +184,6 @@ st.caption("Desarrollado con ❤️ por DataPlay")
 
 
 
-
+#streamlit run app.py
     
     # python app.py
