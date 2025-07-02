@@ -69,19 +69,6 @@ Aplicación desarrollada en `Streamlit`, conectada a la `nba_api`, con visualiza
 
 ---
 
-## ⚙️ Instalación Local
-
-### Requisitos
-- Python 3.9+
-- pip
-
-### 1. Clonar el repositorio
-
-```bash
-git clone https://github.com/Camusyd/dataplay_app.git
-cd dataplay_app
-
-
 ### 🔹 Dashboard Interactivo
 - Embebido en la web mediante `<iframe>`.
 - Construido en Python con Dash y Streamlit.
@@ -113,3 +100,18 @@ cd dataplay_app
 - ✨ Animaciones suaves al pasar el mouse por botones y secciones
 
 ---
+
+
+## ⚙️ Instalación Local
+
+### Requisitos
+- Python 3.9+
+- pip
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/Camusyd/dataplay_app.git
+cd dataplay_app
+
+
