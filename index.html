@@ -71,10 +71,17 @@
     }
     .toggle-content {
       display: none;
-      padding: 1rem;
+      padding: 1rem 1.5rem;
       background-color: #252525;
       border-radius: 0.5rem;
       margin-top: 0.5rem;
+    }
+    .toggle-content ul {
+      margin-top: 0.5rem;
+      padding-left: 1.2rem;
+    }
+    .toggle-content li {
+      margin-bottom: 0.5rem;
     }
     .formulario {
       background-color: #1e1e1e;
@@ -122,7 +129,6 @@
   </style>
 </head>
 <body>
-  <!-- Navbar fija -->
   <nav class="navbar">
     <div class="logo">DataPlay</div>
     <ul class="nav-links">
@@ -143,51 +149,107 @@
 
     <div class="toggle-section" onclick="toggleContent(this)">🚀 ¿Por qué estudiar con nosotros?</div>
     <div class="toggle-content">
-      <p>La analítica deportiva y el Business Intelligence se han convertido en pilares clave...</p>
+      <p>En la era de los datos, entender el juego va más allá de la intuición. La analítica deportiva y el Business Intelligence se han convertido en pilares clave para el rendimiento, la estrategia y la gestión en organizaciones deportivas modernas.</p>
+      <p>En nuestro programa formativo 100% online, te entrenamos para convertirte en un analista capaz de transformar información en acción.</p>
     </div>
 
     <div class="toggle-section" onclick="toggleContent(this)">💼 Saldrás preparado para:</div>
     <div class="toggle-content">
       <ul>
-        <li>Analizar datos deportivos reales con herramientas modernas</li>
-        <li>Construir dashboards interactivos</li>
-        <li>Tomar decisiones basadas en KPIs</li>
+        <li>Analizar datos deportivos reales con herramientas líderes del mercado.</li>
+        <li>Construir dashboards interactivos para clubes, entrenadores o agencias.</li>
+        <li>Identificar patrones de rendimiento y proponer mejoras basadas en datos.</li>
+        <li>Tomar decisiones deportivas informadas como parte de una cultura Data Driven.</li>
+        <li>Una formación enfocada en resultados, sin teoría vacía. Aprenderás haciendo.</li>
       </ul>
     </div>
 
     <div class="toggle-section" onclick="toggleContent(this)">🛠️ Herramientas y tecnologías que dominarás</div>
     <div class="toggle-content">
-      <p>Power BI, Python, SQL, Streamlit, entre otras...</p>
+      <ul>
+        <li>Power BI</li>
+        <li>Google Data Studio (Looker Studio)</li>
+        <li>Python (Pandas, Numpy, Matplotlib, Seaborn)</li>
+        <li>SQL (BigQuery y MySQL)</li>
+        <li>Google Sheets y Excel para análisis rápido</li>
+        <li>Kaggle para datasets y notebooks</li>
+        <li>Streamlit para crear dashboards interactivos</li>
+        <li>Jupyter Notebooks</li>
+        <li>Google Cloud Platform (introducción a BigQuery y Cloud Storage)</li>
+      </ul>
     </div>
 
     <div class="toggle-section" onclick="toggleContent(this)">🎯 Metodología práctica desde el primer día</div>
     <div class="toggle-content">
-      <p>Clases enfocadas en problemas reales, entregables semanales, dashboards reales...</p>
+      <ul>
+        <li>Clases cortas, dinámicas y enfocadas en problemas reales.</li>
+        <li>Proyectos semanales enfocados en datos deportivos reales.</li>
+        <li>Evaluación por entregables, no exámenes tradicionales.</li>
+        <li>Acceso a dashboards de ejemplo y datasets reales del mundo del deporte.</li>
+      </ul>
     </div>
 
     <div class="toggle-section" onclick="toggleContent(this)">📈 ¿Qué aprenderás?</div>
     <div class="toggle-content">
-      <ul><li>BI, visualización, estadística descriptiva, KPIs, automatización de reportes, y más.</li></ul>
+      <ul>
+        <li>Fundamentos de Business Intelligence y Análisis de Datos</li>
+        <li>Visualización de datos aplicada al deporte</li>
+        <li>Limpieza, transformación y análisis exploratorio de datos</li>
+        <li>Principios de estadística descriptiva aplicada</li>
+        <li>Construcción de dashboards y reportes ejecutivos</li>
+        <li>Creación de indicadores de rendimiento (KPIs)</li>
+        <li>Automatización básica de reportes</li>
+        <li>Introducción al análisis predictivo y modelos básicos</li>
+      </ul>
+    </div>
+
+    <div class="toggle-section" onclick="toggleContent(this)">📬 ¿Te interesa?</div>
+    <div class="toggle-content">
+      <p>Solicita información sobre:</p>
+      <ul>
+        <li>Contenidos y duración del programa</li>
+        <li>Acceso a la demo del dashboard</li>
+        <li>Modalidades de pago y becas parciales</li>
+      </ul>
     </div>
 
     <section id="contacto">
-      <h2>📬 Solicita Información</h2>
       <form action="https://formsubmit.co/sydorange93@gmail.com" method="POST" class="formulario">
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" placeholder="tucorreo@example.com" required>
+
         <label for="edad">Edad:</label>
         <select id="edad" name="edad" required>
-          <option>18-24</option><option>25-34</option><option>35-44</option>
+          <option value="">Selecciona tu edad</option>
+          <option>Menos de 18</option>
+          <option>18-24</option>
+          <option>25-34</option>
+          <option>35-44</option>
+          <option>45+</option>
         </select>
-        <label for="curso">Curso:</label>
+
+        <label for="curso">Curso de interés:</label>
         <select id="curso" name="curso" required>
-          <option>BI Deportivo - 8 semanas</option>
-          <option>Modelado y Scouting - 12 semanas</option>
+          <option value="">Selecciona un curso</option>
+          <option>Fundamentos del Análisis de Datos Deportivos - Duración: 4 semanas (12h) - Precio: $120 USD</option>
+          <option>Business Intelligence Aplicado al Deporte - Duración: 8 semanas (32h) - Precio: $280 USD</option>
+          <option>Modelado Predictivo y Scouting con Datos Deportivos - Duración: 12 semanas (48h)</option>
         </select>
+
         <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" required>
+        <input type="tel" id="telefono" name="telefono" placeholder="+57 300 000 0000" required>
+
+        <label>
+          <input type="checkbox" name="terminos" required>
+          He leído y acepto los <a href="terminos.html" target="_blank">Términos del Servicio</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.
+        </label>
+
+        <input type="hidden" name="_next" value="http://127.0.0.1:5500/gracias.html">
+        <input type="hidden" name="_captcha" value="false">
+
         <button type="submit">Solicitar información</button>
       </form>
     </section>
@@ -198,10 +260,17 @@
   </footer>
 
   <script>
-    function toggleContent(el) {
-      const content = el.nextElementSibling;
+    function toggleContent(clicked) {
+      const sections = document.querySelectorAll(".toggle-content");
+      sections.forEach(section => {
+        if (section !== clicked.nextElementSibling) {
+          section.style.display = 'none';
+        }
+      });
+      const content = clicked.nextElementSibling;
       content.style.display = content.style.display === 'block' ? 'none' : 'block';
     }
   </script>
 </body>
 </html>
+
