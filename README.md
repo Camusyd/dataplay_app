@@ -14,7 +14,7 @@
 
 ---
 ## Presentación
-- [📊 Ver Presentación del Proyecto DataPlay](https://gamma.app/docs/DATAPLAY-0newtwadjyzyy1s?mode=present#card-94a47r8cpdteksk)
+- [📄 Ver Presentación del Proyecto DataPlay](https://gamma.app/docs/DATAPLAY-0newtwadjyzyy1s?mode=present#card-94a47r8cpdteksk)
 
 ---
 
