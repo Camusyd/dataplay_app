@@ -15,7 +15,7 @@
 
 Es importante saber que, debido a la naturaleza de las aplicaciones construidas con **Streamlit**, estas requieren un entorno de ejecución activo (un servidor Python) para funcionar. Las **páginas de GitHub** (GitHub Pages) están diseñadas para servir archivos estáticos (HTML, CSS, JavaScript), por lo que **no pueden ejecutar directamente** el dashboard de Python/Streamlit.
 
-Para asegurar que puedas experimentar la interactividad del dashboard sin necesidad de configuraciones locales, he desplegado una versión pública en **Streamlit Cloud**. Puedes acceder a ella directamente desde la sección "Demo en Vivo" de este README.
+Para asegurar que puedas experimentar la interactividad del dashboard sin necesidad de configuraciones locales, he desplegado una versión pública en **Streamlit Cloud**. Puedes acceder a ella directamente desde la sección "Demo en Vivo".
 
 
 ---
