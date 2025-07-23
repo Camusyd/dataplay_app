@@ -13,6 +13,10 @@
 - 📊 Dashboard Interactivo: [https://nba-dashboard-camusyd.streamlit.app](https://nba-dashboard-camusyd.streamlit.app)
 
 ---
+## Presentación
+- [📊 Ver Presentación del Proyecto DataPlay](https://gamma.app/docs/DATAPLAY-0newtwadjyzyy1s?mode=present#card-94a47r8cpdteksk)
+
+---
 
 ## 🧱 Contenido del Proyecto
 
